@@ -3,6 +3,7 @@ using Mealplan.Models.CustomViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +19,52 @@ namespace Mealplan.Controllers
         }
 
         // GET: Recipes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string searchString, string currentFilter,int? page)
         {
-            var applicationDbContext = _context.Recipe.Include(r => r.User);
-            return View(await applicationDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["CreationSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+
+            ViewData["CurrentFilter"] = searchString;
+
+
+            var Recipes = from r in _context.Recipe                                            //
+                          select r;                                                            //
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Recipes = Recipes.Where(r => r.RecipeName.Contains(searchString)
+                                       || r.RecipeDescription.Contains(searchString));
+            }                                                                                 //var applicationDbContext = _context.Recipe.Include(r => r.User);                
+                                                                                              //
+            switch (sortOrder)                                                                 //
+            {                                                                                  //
+                case "name_desc":                                                              //
+                    Recipes = Recipes.OrderByDescending(r => r.RecipeName);                    //
+                    break;                                                                     //
+                case "Date":                                                                   //
+                    Recipes = Recipes.OrderBy(r => r.ReCreationDate);                          //
+                    break;                                                                     //
+                case "date_desc":                                                              //
+                    Recipes = Recipes.OrderByDescending(r => r.ReCreationDate);                //
+                    break;                                                                     //
+                default:                                                                       //
+                    Recipes = Recipes.OrderBy(r => r.RecipeName);                              //
+                    break;
+            }
+
+            int pageSize = 3;
+            return View(await PaginatedList<Recipe>.CreateAsync(Recipes.AsNoTracking(), page ?? 1, pageSize));
+            //return View(await Recipes.ToListAsync());
         }
 
         // GET: Recipes/Details/5
