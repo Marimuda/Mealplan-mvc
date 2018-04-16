@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Mealplan.Data;
+using Mealplan.Models.CustomViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Mealplan.Data;
-using Mealplan.Models.CustomViewModels;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mealplan.Controllers
 {
@@ -36,7 +34,9 @@ namespace Mealplan.Controllers
 
             var recipe = await _context.Recipe
                 .Include(r => r.User)
+                .AsNoTracking() //
                 .SingleOrDefaultAsync(m => m.RecipeId == id);
+
             if (recipe == null)
             {
                 return NotFound();
@@ -59,14 +59,25 @@ namespace Mealplan.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecipeId,ReCreationDate,RecipeDescription,RecipeName,UserId")] Recipe recipe)
         {
-            if (ModelState.IsValid)
+            try //
             {
-                _context.Add(recipe);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _context.Add(recipe);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException) //
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
             }
             ViewData["UserId"] = new SelectList(_context.Aspnetusers, "Id", "Id", recipe.UserId);
             return View(recipe);
+
         }
 
         // GET: Recipes/Edit/5
