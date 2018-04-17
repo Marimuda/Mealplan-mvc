@@ -12,9 +12,10 @@ using System;
 namespace Mealplan.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180417203310_configCurrentCreate")]
+    partial class configCurrentCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,13 +251,15 @@ namespace Mealplan.Data.Migrations
 
                     b.Property<string>("Gender");
 
-                    b.Property<int>("Height")
-                        .HasColumnType("tinyint(4)");
+                    b.Property<sbyte>("Height")
+                        .HasColumnType("tinyint(4)")
+                        .HasMaxLength(3);
 
                     b.Property<string>("UserId");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("tinyint(4)");
+                    b.Property<sbyte>("Weight")
+                        .HasColumnType("tinyint(4)")
+                        .HasMaxLength(3);
 
                     b.HasKey("BioId");
 
