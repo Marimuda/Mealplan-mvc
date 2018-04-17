@@ -3,40 +3,31 @@ using Mealplan.Models.CustomViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mealplan.Controllers
 {
-    public class BiodatasController : Controller
+    public class ReciperatningsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private object Birthday;
 
-        public BiodatasController(ApplicationDbContext context)
+        public ReciperatningsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Biodatas
-        public async Task<IActionResult> Index(int Age, DateTime Birthday)
+        // GET: Reciperatnings
+        public async Task<IActionResult> Index()
         {
-
-            var applicationDbContext = _context.Biodata.Include(b => b.User);
-
-        
-
-            var now = DateTime.Today;
-            var GetAge = now.Year - Birthday.Year;
-            if (Birthday.Month > now.Month) { GetAge--; }
-            GetAge = Age;
-
-
-            return View(await applicationDbContext.ToListAsync());
+            //var applicationDbContext = _context.Reciperatning.Include(r => r.Recipe);
+            var reciperatnings = _context.Reciperatning
+                .Include(c => c.Recipe)
+                .AsNoTracking();
+            return View(await reciperatnings.ToListAsync());
         }
 
-        // GET: Biodatas/Details/5
+        // GET: Reciperatnings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,42 +35,42 @@ namespace Mealplan.Controllers
                 return NotFound();
             }
 
-            var biodata = await _context.Biodata
-                .Include(b => b.User)
-                .SingleOrDefaultAsync(m => m.BioId == id);
-            if (biodata == null)
+            var reciperatning = await _context.Reciperatning
+                .Include(r => r.Recipe)
+                .SingleOrDefaultAsync(m => m.RecipeId == id);
+            if (reciperatning == null)
             {
                 return NotFound();
             }
 
-            return View(biodata);
+            return View(reciperatning);
         }
 
-        // GET: Biodatas/Create
+        // GET: Reciperatnings/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Aspnetusers, "Id", "Id");
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "RecipeId", "RecipeId");
             return View();
         }
 
-        // POST: Biodatas/Create
+        // POST: Reciperatnings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BioId,ActivityLevel,Birthday,Gender,Height,UserId,Weight")] Biodata biodata)
+        public async Task<IActionResult> Create([Bind("RecipeId,RecipeRating")] Reciperatning reciperatning)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(biodata);
+                _context.Add(reciperatning);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Aspnetusers, "Id", "Id", biodata.UserId);
-            return View(biodata);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "RecipeId", "RecipeId", reciperatning.RecipeId);
+            return View(reciperatning);
         }
 
-        // GET: Biodatas/Edit/5
+        // GET: Reciperatnings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -87,23 +78,23 @@ namespace Mealplan.Controllers
                 return NotFound();
             }
 
-            var biodata = await _context.Biodata.SingleOrDefaultAsync(m => m.BioId == id);
-            if (biodata == null)
+            var reciperatning = await _context.Reciperatning.SingleOrDefaultAsync(m => m.RecipeId == id);
+            if (reciperatning == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Aspnetusers, "Id", "Id", biodata.UserId);
-            return View(biodata);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "RecipeId", "RecipeId", reciperatning.RecipeId);
+            return View(reciperatning);
         }
 
-        // POST: Biodatas/Edit/5
+        // POST: Reciperatnings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BioId,ActivityLevel,Birthday,Gender,Height,UserId,Weight")] Biodata biodata)
+        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,RecipeRating")] Reciperatning reciperatning)
         {
-            if (id != biodata.BioId)
+            if (id != reciperatning.RecipeId)
             {
                 return NotFound();
             }
@@ -112,12 +103,12 @@ namespace Mealplan.Controllers
             {
                 try
                 {
-                    _context.Update(biodata);
+                    _context.Update(reciperatning);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BiodataExists(biodata.BioId))
+                    if (!ReciperatningExists(reciperatning.RecipeId))
                     {
                         return NotFound();
                     }
@@ -128,11 +119,11 @@ namespace Mealplan.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Aspnetusers, "Id", "Id", biodata.UserId);
-            return View(biodata);
+            ViewData["RecipeId"] = new SelectList(_context.Recipe, "RecipeId", "RecipeId", reciperatning.RecipeId);
+            return View(reciperatning);
         }
 
-        // GET: Biodatas/Delete/5
+        // GET: Reciperatnings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,31 +131,31 @@ namespace Mealplan.Controllers
                 return NotFound();
             }
 
-            var biodata = await _context.Biodata
-                .Include(b => b.User)
-                .SingleOrDefaultAsync(m => m.BioId == id);
-            if (biodata == null)
+            var reciperatning = await _context.Reciperatning
+                .Include(r => r.Recipe)
+                .SingleOrDefaultAsync(m => m.RecipeId == id);
+            if (reciperatning == null)
             {
                 return NotFound();
             }
 
-            return View(biodata);
+            return View(reciperatning);
         }
 
-        // POST: Biodatas/Delete/5
+        // POST: Reciperatnings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var biodata = await _context.Biodata.SingleOrDefaultAsync(m => m.BioId == id);
-            _context.Biodata.Remove(biodata);
+            var reciperatning = await _context.Reciperatning.SingleOrDefaultAsync(m => m.RecipeId == id);
+            _context.Reciperatning.Remove(reciperatning);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BiodataExists(int id)
+        private bool ReciperatningExists(int id)
         {
-            return _context.Biodata.Any(e => e.BioId == id);
+            return _context.Reciperatning.Any(e => e.RecipeId == id);
         }
     }
 }

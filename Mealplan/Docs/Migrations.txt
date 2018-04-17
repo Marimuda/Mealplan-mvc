@@ -14,6 +14,8 @@ Apply the migration to the DB in development
 - https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations#apply-the-migration-to-the-db-in-development
 Comand "  dotnet ef database update --context ApplicationDbContext --verbose "
 
+Command " dotnet ef migrations remove "
+
 Fixing foreign key constraints with legacy data
 https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/complex-data-model#fk
 

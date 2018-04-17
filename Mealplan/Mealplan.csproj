@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-Mealplan-8700B08A-5CD6-4F7D-B1E3-8387BFC51C96</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20180417120456_AgeAdded.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />

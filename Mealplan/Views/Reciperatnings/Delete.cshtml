@@ -1,0 +1,33 @@
+﻿@model Mealplan.Models.CustomViewModels.Reciperatning
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Reciperatning</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeRating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipeRating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.RecipeId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="RecipeId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

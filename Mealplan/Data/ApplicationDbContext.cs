@@ -219,8 +219,8 @@ namespace Mealplan.Data
                 entity.Property(e => e.RecipeRating).HasColumnType("smallint(6)");
 
                 entity.HasOne(d => d.Recipe)
-                    .WithOne(p => p.Reciperatning)
-                    .HasForeignKey<Reciperatning>(d => d.RecipeId)
+                    .WithMany(p => p.Reciperatnings)
+                    .HasForeignKey(d => d.RecipeId)
                     .HasConstraintName("FK_RecipeRatning_Recipe_RecipeId");
             });
 

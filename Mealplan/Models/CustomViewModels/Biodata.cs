@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Mealplan.Models.CustomViewModels
 {
@@ -12,6 +11,17 @@ namespace Mealplan.Models.CustomViewModels
         public sbyte Height { get; set; }
         public string UserId { get; set; }
         public sbyte Weight { get; set; }
+
+        public int Aget
+        {
+            get
+            {
+                DateTime now = DateTime.Today;
+                int age = now.Year - Birthday.Year;
+                if (Birthday > now.AddYears(-age)) age--;
+                return age;
+            }
+        }
 
         public Aspnetusers User { get; set; }
     }

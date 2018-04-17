@@ -9,24 +9,28 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.ActivityLevel)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Birthday)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Gender)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Height)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Weight)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActivityLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Aget)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.User)
             </th>
@@ -34,32 +38,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthday)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BioId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivityLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthday)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Height)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Aget)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Id)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BioId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BioId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BioId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
