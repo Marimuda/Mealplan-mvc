@@ -33,7 +33,10 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Biodatas" asp-action="Index">Calculator information</a></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Biodatas" asp-action="Index">Calculator information</a></li>}
+
                     <li><a asp-area="" asp-controller="Recipes" asp-action="Index">Recipes</a></li>
                     <li><a asp-area="" asp-controller="Reciperatning" asp-action="Index">Recipe Ratning</a></li>
                 </ul>

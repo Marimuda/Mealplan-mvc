@@ -1,5 +1,6 @@
 ﻿using Mealplan.Data;
 using Mealplan.Models.CustomViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace Mealplan.Controllers
 
             var applicationDbContext = _context.Biodata.Include(b => b.User);
 
-        
+
 
             var now = DateTime.Today;
             var GetAge = now.Year - Birthday.Year;
@@ -132,6 +133,7 @@ namespace Mealplan.Controllers
             return View(biodata);
         }
 
+        [Authorize(Policy = "MustBeAdmin")]
         // GET: Biodatas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

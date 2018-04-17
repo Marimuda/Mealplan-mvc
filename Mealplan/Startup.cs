@@ -33,6 +33,18 @@ namespace Mealplan
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            //RoleAuthorization
+
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("MustBeAdmin", p => p.RequireAuthenticatedUser().RequireRole("Admin"));
+            });
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("MustBeModerator", p => p.RequireAuthenticatedUser().RequireRole("Moderator"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
