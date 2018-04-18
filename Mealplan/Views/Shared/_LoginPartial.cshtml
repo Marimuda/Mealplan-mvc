@@ -8,6 +8,18 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
+            @if (User.IsInRole("Admin"))
+            {
+                <li><a href="javascript:;">Role: Admin</a></li>
+            }
+            else if (User.IsInRole("Moderator"))
+            {
+                <li><a href="javascript:;">Role: Moderator</a></li>
+            }
+            else
+            {
+                <li><a href="javascript:;">Role: User</a></li>
+            }
             <li>
                 <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>

@@ -8,10 +8,12 @@ namespace Mealplan.Models.CustomViewModels
 
         public enum ActivityLevels
         {
-
+            [Display(Name = "Sedentary or light activity")]
             Sedentary = 1,
+            [Display(Name = "Active or moderately active")]
             Active = 2,
-            VeryActive = 3
+            [Display(Name = "Vigorously active")]
+            Very = 3
         }
         [Display(Name = "ID")]
         public int BioId { get; set; }

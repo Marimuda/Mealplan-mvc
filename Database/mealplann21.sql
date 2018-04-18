@@ -157,3 +157,16 @@ VALUES ('20180417201646_BMRCreate', '2.0.2-rtm-10011');
 
 INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
 VALUES ('20180417203310_configCurrentCreate', '2.0.2-rtm-10011');
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20180417211154_HeightDigitsCreate', '2.0.2-rtm-10011');
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20180417211627_Height2DigitsCreate', '2.0.2-rtm-10011');
+
+ALTER TABLE `biodata` MODIFY COLUMN `Weight` int(5) NOT NULL;
+ALTER TABLE `biodata` ALTER COLUMN `Weight` DROP DEFAULT;
+ALTER TABLE `biodata` MODIFY COLUMN `Height` int(5) NOT NULL;
+ALTER TABLE `biodata` ALTER COLUMN `Height` DROP DEFAULT;
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20180418052741_biotypechangeCreate', '2.0.2-rtm-10011');

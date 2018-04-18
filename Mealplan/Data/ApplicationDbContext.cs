@@ -170,9 +170,9 @@ namespace Mealplan.Data
 
                 entity.Property(e => e.ActivityLevel).HasColumnType("tinyint(4)");
 
-                entity.Property(e => e.Height).HasColumnType("tinyint(4)");
+                entity.Property(e => e.Height).HasColumnType("int(5)");
 
-                entity.Property(e => e.Weight).HasColumnType("tinyint(4)");
+                entity.Property(e => e.Weight).HasColumnType("int(5)");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Biodata)

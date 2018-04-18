@@ -34,6 +34,8 @@ namespace Mealplan.Controllers
             GetAge = Age;
 
 
+
+
             return View(await applicationDbContext.ToListAsync());
         }
 

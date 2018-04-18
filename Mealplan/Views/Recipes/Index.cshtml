@@ -25,9 +25,6 @@
     <thead>
         <tr>
             <th>
-                User
-            </th>
-            <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Name</a>
             </th>
             <th>
@@ -35,6 +32,9 @@
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CreationSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Creation Time</a>
+            </th>
+            <th>
+                User
             </th>
             <th></th>
         </tr>
@@ -44,9 +44,6 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.RecipeName)
                 </td>
 
@@ -55,6 +52,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ReCreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
                 </td>
                 <td>
                     <a class="btn btn-default btn-xs" asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
