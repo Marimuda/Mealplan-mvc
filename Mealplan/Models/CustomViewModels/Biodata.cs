@@ -49,16 +49,23 @@ namespace Mealplan.Models.CustomViewModels
             get
             {
                 int k;
+                double ar;
 
                 if (Gender != "Female")
                     k = -161;
                 else
                     k = 5;
 
+                if (ActivityLevel == ActivityLevels.Sedentary)
+                { ar = 1.53; }
+                else if (ActivityLevel == ActivityLevels.Active)
+                { ar = 1.76; }
+                else
+                { ar = 2.25; }
 
-                double BMR = (10 * Weight + 6.25 * Height - 5 * Aget - k);
+                double BMR = (10 * Weight + 6.25 * Height - 5 * Aget - k) * ar;
 
-                return BMR;
+                return Convert.ToInt16(BMR);
 
             }
         }
