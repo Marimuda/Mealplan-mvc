@@ -8,6 +8,23 @@ namespace Mealplan.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Required]
+        [StringLength(20, ErrorMessage = "The {0} must be between {2} and {1} characters long.", MinimumLength = 5)]
+        [RegularExpression("^([a-zA-Z0-9]{5,20})$", ErrorMessage = "The {0} must contain only alphanumeric characters")]
+        [Display(Name = "User Name")]
+
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
