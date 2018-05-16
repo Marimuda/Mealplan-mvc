@@ -1,0 +1,30 @@
+﻿@model Mealplan.Models.CustomViewModels.Reciperatning
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Reciperatning</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeRating)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipeRating)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Recipe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Recipe.RecipeId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecipeId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

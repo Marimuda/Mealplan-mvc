@@ -1,0 +1,23 @@
+﻿dotnet ef dbcontext scaffold "server=127.0.0.1;port=3306;user=Admin;password=1234;database=mealplann2" Pomelo.EntityFrameworkCore.MySql -o Models/CustomViewModels -f --verbose
+
+to scaffold an individual table
+dotnet ef dbcontext scaffold "server=127.0.0.1;port=3306;user=Admin;password=1234;database=mealplann2" Pomelo.EntityFrameworkCore.MySql -o Models/CustomViewModels -t mealplan.Persons --verbose
+
+dotnet ef migrations remove deletes the migration and ensures the snapshot is correctly reset.
+Command "  dotnet ef migrations remove  "
+
+Create an initial migration
+- https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations#create-an-initial-migration
+Comand "  dotnet ef migrations add InitialCreate --context ApplicationDbContext  "
+
+Apply the migration to the DB in development 
+- https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/migrations#apply-the-migration-to-the-db-in-development
+Comand "  dotnet ef database update --context ApplicationDbContext --verbose "
+
+Command " dotnet ef migrations remove "
+
+Fixing foreign key constraints with legacy data
+https://docs.microsoft.com/en-us/aspnet/core/data/ef-rp/complex-data-model#fk
+
+
+"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-MealPlan-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"
