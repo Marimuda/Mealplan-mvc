@@ -1,0 +1,137 @@
+﻿@model HealthyEating.Models.Recipe
+
+@{
+    @* http://www.dotnetfunda.com/articles/show/3438/star-rating-system-in-aspnet-mvc *@
+    ViewData["Title"] = "Details";
+    var imgurl = ViewBag.ImgUrl;
+    var ratingSum = ViewBag.RatingSum;
+    var ratingCount = ViewBag.RatingCount;
+    decimal rating = 0;
+    if (ratingCount > 0)
+    {
+        rating = (ratingSum / ratingCount);
+    }
+    var totalRating = decimal.Parse(rating.ToString());
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Recipe</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipeName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeDescription)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipeDescription)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeImage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecipeImage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeCreationTime)
+        </dt>
+        <dd>
+            <img src="@Url.Content(imgurl)" style="height:200px;width:200px;" />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Users)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Users.FullName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeRatings)
+        </dt>
+        <dd id="RatingsControl">
+            @{await Html.RenderPartialAsync("_RatingsControl");}
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RecipeIngredients)
+        </dt>
+
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Ingredient Name</th>
+                    <th>Protein</th>
+                    <th>Carbohydrates</th>
+                    <th>Fat</th>
+                </tr>
+                @foreach (var item in Model.RecipeIngredients)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ingredients.Protein)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ingredients.Carbohydrates)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ingredients.Fat)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.RecipeID">Edit</a> |
+    <a asp-action="Index">Back to List</a> |
+    <a href="/Menus"> Menu Overview </a>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        function SetScoreControlCallbacks(e) {
+            var score = $("#RatingsControl a[Name='Score']")
+            score.on('click', SetScore);
+        }
+        function SetScore(e)
+        {
+            var recipeid = $(this).data("recipeid");
+            var score = $(this).data("score");
+
+            var data = { recipeid: $(this).data("recipeid"), score: $(this).data("score") };
+
+            $.post("@Url.Action("SetRating", "Recipes")", data)
+
+
+                .done(function (respons, status, jqxhr)
+                {
+                    var url = "@Url.Action("RatingsControl", "Recipes")";
+                    $("#RatingsControl").load(url, { recipeid: data.recipeid },
+                        function (responsText, statusText, xhr)
+                        {
+                            switch (statusText)
+                            {
+                                case "success":
+                                    SetScoreControlCallbacks();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    )
+            })
+        }
+        $(document).ready(SetScoreControlCallbacks)
+    </script>
+}

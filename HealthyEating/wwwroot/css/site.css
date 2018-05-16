@@ -17,11 +17,9 @@
 }
 
 .button {
-
     background-color: #f67a00;
     color: #000;
     border-radius: 3px;
-
 }
 
 .button-Block {
@@ -61,10 +59,12 @@
 }
 
 .xl-padding {
-padding: 8px 52px;
-
+    padding: 8px 52px;
 }
 
+.sm-margin-bottom {
+    margin-bottom: 30px;
+}
 
 /* Make .svg files in the carousel display properly in older browsers */
 .carousel-inner .item img[src$=".svg"] {
@@ -76,10 +76,98 @@ padding: 8px 52px;
     margin: 15px;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+form {
+    outline: 0;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    margin: 10px 0px 0px 10px; 
 }
+
+.form-shadow {
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+form > .textbox {
+    outline: 0;
+    height: 30px;
+    width: 244px;
+    line-height: 42px;
+    padding: 0 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #212121;
+    border: 0;
+    float: left;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+    form > .textbox:focus {
+        outline: 0;
+        background-color: #FFF;
+    }
+
+    form > .button {
+        outline: 0;
+        background: none;
+        background-color: rgba(38, 50, 56, 0.8);
+        float: left;
+        height: 30px;
+        width: 42px;
+        text-align: center;
+        line-height: 30px;
+        border: 0;
+        color: #FFF;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 80px;
+        text-align: left;
+        text-rendering: auto;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        -webkit-transition: background-color .4s ease;
+        transition: background-color .4s ease;
+        -webkit-border-radius: 0 4px 4px 0;
+        border-radius: 0 4px 4px 0;
+    }
+
+form > .button:hover {
+    background-color: rgba(0, 150, 136, 0.8);
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #e7e7e7;
+    background-color: #bdbdbd;
+}
+.navbar-default .navbar-nav > li > a {
+    color:#000;
+}
+.navbar-default .navbar-brand {
+    color: #000;
+}
+
+.nav:before, .nav:after, .navbar:before, .navbar:after, .navbar-header:before, .navbar-header:after, .navbar-collapse:before, .navbar-collapse:after {
+    display:none;
+    content: " ";
+}
+
+.nav {
+    padding-left: 0;
+    margin-top: -10px !important;
+    list-style: none;
+}
+.navbar-btn {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 3px;
+}
+.ingredient-list{
+    padding: 0px 2px;
+    line-height: 12px;
+    vertical-align: top;
+}
+    /* Hide/rearrange for smaller screens */
+    @media screen and (max-width: 767px) {
+        /* Hide captions */
+        .carousel-caption {
+            display: none;
+        }
+    }

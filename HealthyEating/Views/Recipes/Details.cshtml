@@ -5,6 +5,7 @@
     ViewData["Title"] = "Details";
     var ratingSum = ViewBag.RatingSum;
     var ratingCount = ViewBag.RatingCount;
+    var imgurl = ViewBag.ImgUrl;
 
     decimal rating = 0;
     if (ratingCount > 0)
@@ -14,87 +15,46 @@
     var totalRating = decimal.Parse(rating.ToString());
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>Recipe</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RecipeName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeDescription)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RecipeDescription)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeImage)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RecipeImage)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeCreationTime)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.RecipeCreationTime)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Users)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Users.FullName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeRatings)
-        </dt>
-        <dd id="RatingsControl">
+<div class="col-md-12">
+    <div class="col-md-2 col-md-offset-4">
+        <h4 style="margin-bottom:3px;">@Html.DisplayFor(model => model.RecipeName)</h4>
+        <p>@Html.DisplayFor(model => model.Users.FullName)</p>
+        <p id="RatingsControl" style="margin-left:-15px;">
             @{await Html.RenderPartialAsync("_RatingsControl");}
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.RecipeIngredients)
-        </dt>
+        </p>
+    </div>
+    <div class="col-md-2 col-md-offset-4">
+        <img src="@Url.Content(imgurl)" style="height:200px;width:200px;" />
+    </div>
 
-
-        <dd>
-            <table class="table">
-                <tr>
-                    <th>Ingredient Name</th>
-                    <th>Protein</th>
-                    <th>Carbohydrates</th>
-                    <th>Fat</th>
-                </tr>
-                @foreach (var item in Model.RecipeIngredients)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ingredients.Protein)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ingredients.Carbohydrates)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Ingredients.Fat)
-                        </td>
-                    </tr>
-                }
-            </table>
-        </dd>
-    </dl>
 </div>
-<div>
+<div class="col-md-6">
+    <h4>
+        Ingredients
+    </h4>
+    @foreach (var item in Model.RecipeIngredients)
+    {
+        <p class="ingredient-list">
+            @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
+        </p>
+    }
+
+</div>
+<div class="col-md-6">
+    <h4>
+        Recipe Description
+    </h4>
+    <p>@Html.DisplayFor(model => model.RecipeDescription)</p>
+</div>
+
+<div class="col-md-10">
     <a asp-action="Edit" asp-route-id="@Model.RecipeID">Edit</a> |
     <a asp-action="Index">Back to List</a> |
     <a href="/Menus"> Menu Overview </a>
+</div>
 
+<div>
+    &ensp;
 </div>
 
 

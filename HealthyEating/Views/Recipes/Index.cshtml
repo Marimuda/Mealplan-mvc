@@ -20,86 +20,110 @@
         </p>
     </div>
 </form>
-
-<table class="table table-bordered table-responsive w-auto">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Name</a>
-            </th>
-            <th>
-                <a asp-action="Index" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Description</a>
-            </th>
-            <th>
-                Recipe Image
-            </th>
-            <th>
-                Creation Time
-            </th>
-            <th>
-                Recipe Score
-            </th>
-            @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
-            {
-                <th>
-                    Rating Count
-                </th>
-            }
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">User ID</a>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            string selectedRow = "";
-            if (item.RecipeID == (int?)ViewData["RecipeID"])
-            {
-                selectedRow = "bg-success";
-
-            }
-            <tr class="@selectedRow">
-                <td>
+<div>
+    @foreach (var item in Model)
+    {
+        <a href="./Recipes/Details/@item.RecipeID">
+            <div class="col-md-4">
+                <p>
                     @Html.DisplayFor(modelItem => item.RecipeName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecipeDescription)
-                </td>
-                <td>
+                </p>
+                <p>
                     <img src="@Url.Content(item.RecipeImage)" style="height:200px;width:200px;" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecipeCreationTime)
-                </td>
-                <td>
-                    <p>@item.RecipeRatings.Sum(i => i.Score)</p>
-                </td>
-
-                @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
-                {
-                    <td>
-                        <p>@item.RecipeRatings.Count()</p>
-                    </td>
-                }
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.UsersId)
-                </td>
-                <td>
-                    <a asp-action="Index" asp-route-id="@item.RecipeID">Select</a> |
-                    <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>
-                </td>
+                </p>
+                <p>
+                    by @Html.DisplayFor(modelItem => item.Users.FullName)
+                </p>
                 @*<td>
                     <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">Add More</button>
                     </td>*@
+            </div>
+        </a>
+    }
+
+</div>
+@*
+        <table class="table table-bordered table-responsive w-auto">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Name</a>
+                </th>
+                <th>
+                    <a asp-action="Index" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Description</a>
+                </th>
+                <th>
+                    Recipe Image
+                </th>
+                <th>
+                    Creation Time
+                </th>
+                <th>
+                    Recipe Score
+                </th>
+                @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <th>
+                        Rating Count
+                    </th>
+                }
+                <th>
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">User ID</a>
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string selectedRow = "";
+                if (item.RecipeID == (int?)ViewData["RecipeID"])
+                {
+                    selectedRow = "bg-success";
+
+                }
+                <tr class="@selectedRow">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeDescription)
+                    </td>
+                    <td>
+                        <img src="@Url.Content(item.RecipeImage)" style="height:200px;width:200px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecipeCreationTime)
+                    </td>
+                    <td>
+                        <p>@item.RecipeRatings.Sum(i => i.Score)</p>
+                    </td>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                    {
+                        <td>
+                            <p>@item.RecipeRatings.Count()</p>
+                        </td>
+                    }
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UsersId)
+                    </td>
+                    <td>
+                        <a asp-action="Index" asp-route-id="@item.RecipeID">Select</a> |
+                        <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>
+                    </td>
+                    @*<td>
+                        <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">Add More</button>
+                        </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+*@
+
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";

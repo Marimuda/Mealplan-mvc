@@ -80,10 +80,9 @@ namespace HealthyEating.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 9;
             return View(await PaginatedList<Recipe>.CreateAsync(Recipes, page ?? 1, pageSize));
         }
-
         // GET: Recipes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -124,6 +123,8 @@ namespace HealthyEating.Controllers
                 ViewBag.RatingCount = ratingCount;
                 ViewBag.RatingCountP = p;
                 ViewBag.RatingCountM = m;
+                ViewBag.ImgUrl = recipe.RecipeImage;
+                ViewBag.RecipeID = recipe.RecipeID;
 
             }
             else

@@ -1,12 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - HealthyEating</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <script src="~/bundles/jquery.js"></script>
         <script src="~/bundles/jqueryval.js"></script>
@@ -20,7 +23,7 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -42,6 +45,10 @@
                     <li><a asp-area="" asp-controller="Menus" asp-action="Index">Menu</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
+                <form method="post" class="form-shadow">
+                    <input type="text" class="textbox" placeholder="Search">
+                    <input title="Search" value=" ֩" type="submit" class="button">
+                </form>
             </div>
         </div>
     </nav>

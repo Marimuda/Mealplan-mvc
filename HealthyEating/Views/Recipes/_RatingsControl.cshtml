@@ -1,15 +1,15 @@
 ﻿@model HealthyEating.Models.Recipe
+@*@{
+        if (Model.RecipeRatings.Count > 0)
+        {
+            <p>The overall rating for @Model.RecipeName is @ViewBag.RatingSum where @ViewBag.RatingCountP + and @ViewBag.RatingCountM - </p>
+        }
+        else
+        {
+            <p>Be the first to rate @Model.RecipeName</p>
+        }
+    }*@
 
-@{
-    if (Model.RecipeRatings.Count > 0)
-    {
-        <p>The overall rating for @Model.RecipeName is @ViewBag.RatingSum where @ViewBag.RatingCountP + and @ViewBag.RatingCountM - </p>
-    }
-    else
-    {
-        <p>Be the first to rate @Model.RecipeName</p>
-    }
-}
 
 
 @{
@@ -18,7 +18,7 @@
     {
         double k = Math.Pow(-1, i);
         <a href="./@Model.RecipeID" name="Score" data-score="@k" data-recipeid="@Model.RecipeID">
-            <i class="glyphicon glyphicon-arrow@(k == 1 ? "-up" : "-down")" style="@(k == 1 ? "color:green" : "color:red")">@(k == 1 ? @ViewBag.RatingCountP : @ViewBag.RatingCountM )</i>
+            <i class="glyphicon glyphicon-arrow@(k == 1 ? "-up" : "-down")" style="@(k == 1 ? "color:green; padding-right:25px; margin:0px 15px" : "color:red; padding-left:25px")"><span style="color:#000;">@(k == 1 ? @ViewBag.RatingCountP : @ViewBag.RatingCountM )</span></i>
         </a>
     }
 }
