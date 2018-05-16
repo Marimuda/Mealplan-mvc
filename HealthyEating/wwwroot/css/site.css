@@ -1,0 +1,85 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.button-Container {
+    text-align: center;
+    margin-top: 20px;
+    min-height: 150px !important;
+}
+
+.button {
+
+    background-color: #f67a00;
+    color: #000;
+    border-radius: 3px;
+
+}
+
+.button-Block {
+    display: block;
+    width: 300px;
+    height: 40px;
+    margin: 0 auto;
+    padding-top: 8px;
+}
+
+.button:hover {
+    text-decoration: none;
+    color: #222;
+    background-color: #ff7e00;
+}
+
+.button:active {
+    text-decoration: none;
+    font-weight: 500;
+    color: #000;
+    background-color: #f67a00;
+}
+
+.button:link {
+    text-decoration: none;
+    color: #000;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.sm-padding {
+    padding: 8px 21px;
+}
+
+.xl-padding {
+padding: 8px 52px;
+
+}
+
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}

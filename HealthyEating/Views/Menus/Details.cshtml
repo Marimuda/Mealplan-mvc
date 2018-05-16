@@ -1,0 +1,36 @@
+﻿@model HealthyEating.Models.Menu
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Menu</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MenuName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MenuName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MealPlan)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MealPlan)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Users)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Users.FirstName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MenuID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

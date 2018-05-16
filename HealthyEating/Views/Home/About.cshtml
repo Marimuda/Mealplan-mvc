@@ -1,0 +1,33 @@
+﻿@model IEnumerable<HealthyEating.Models.MealViewModels.RecipeCounter>
+@{
+    ViewData["Title"] = "About";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<table class="table table-striped table-bordered table-hover table-responsive w-auto">
+    <tr>
+        <th>
+            Recipe ID
+        </th>
+        <th>
+            Score
+        </th>
+        <th>
+            Rating Quanity
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeID)
+            <td>
+                @item.RecipeScore
+            <td>
+                @item.RecipeCount
+            </td>
+        </tr>
+    }
+</table>

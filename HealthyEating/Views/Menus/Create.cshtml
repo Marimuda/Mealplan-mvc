@@ -1,0 +1,69 @@
+﻿@model HealthyEating.Models.Menu
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Menu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Menus" asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MenuName" class="control-label"></label>
+                <input asp-for="MenuName" class="form-control" />
+                <span asp-validation-for="MenuName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MealPlan" class="control-label d-block"></label>
+                    <select asp-for="MealPlan" asp-items="Html.GetEnumSelectList<HealthyEating.Models.Menu.MealPlans>()" class="btn btn-default dropdown-toggle"></select>
+                    <span asp-validation-for="MealPlan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsersId" class="control-label"></label>
+                <select asp-for="UsersId" class="form-control" asp-items="ViewBag.UserID"></select>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-0 col-md-12">
+                    <table>
+                        <tr>
+                            @{
+                        int cnt = 0;
+                        List<HealthyEating.Models.MealViewModels.AssignedRecipes> recipes = ViewBag.Recipes;
+
+                        foreach (var r in recipes)
+                        {
+                            if (cnt++ % 3 == 0)
+                            {
+                                @:</tr><tr>
+                    }
+                    @:<td>
+                        <input type="checkbox"
+                               name="selectedRecipes"
+                               value="@r.RecipeID"
+                               @(Html.Raw(r.Assigned ? "checked=\"checked\"" : "")) />
+                        @r.RecipeID @:  @r.RecipeName
+                        @:</td>
+                         }
+                         @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

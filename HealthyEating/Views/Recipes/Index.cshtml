@@ -1,0 +1,139 @@
+﻿@model PaginatedList<HealthyEating.Models.Recipe>
+@*@model IEnumerable<HealthyEating.Models.Recipe>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["currentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table table-bordered table-responsive w-auto">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Name</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-currentFilter="@ViewData["CurrentFilter"]">Recipe Description</a>
+            </th>
+            <th>
+                Recipe Image
+            </th>
+            <th>
+                Creation Time
+            </th>
+            <th>
+                Recipe Score
+            </th>
+            @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+            {
+                <th>
+                    Rating Count
+                </th>
+            }
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">User ID</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string selectedRow = "";
+            if (item.RecipeID == (int?)ViewData["RecipeID"])
+            {
+                selectedRow = "bg-success";
+
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeDescription)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.RecipeImage)" style="height:200px;width:200px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeCreationTime)
+                </td>
+                <td>
+                    <p>@item.RecipeRatings.Sum(i => i.Score)</p>
+                </td>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                {
+                    <td>
+                        <p>@item.RecipeRatings.Count()</p>
+                    </td>
+                }
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersId)
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.RecipeID">Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.RecipeID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.RecipeID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RecipeID">Delete</a>
+                </td>
+                @*<td>
+                    <button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">Add More</button>
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-page="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+@*<script type="text/javascript">
+
+        $(document).ready(function () {
+            $(document).on("click", ".classAdd", function () { //
+                var rowCount = $('.data-contact-person').length + 1;
+                var contactdiv = '<tr class="data-contact-person">' +
+                    '<td><input type="text" name="f-name' + rowCount + '" class="form-control f-name01" /></td>' +
+                    '<td><input type="text" name="l-name' + rowCount + '" class="form-control l-name01" /></td>' +
+                    '<td><input type="text" name="email' + rowCount + '" class="form-control email01" /></td>' +
+                    '<td><button type="button" id="btnAdd" class="btn btn-xs btn-primary classAdd">Add More</button>' +
+                    '<button type="button" id="btnDelete" class="deleteContact btn btn btn-danger btn-xs">Remove</button></td>' +
+                    '</tr>';
+                $('#maintable').append(contactdiv); // Adding these controls to Main table class
+            });
+        });
+    </script>  *@

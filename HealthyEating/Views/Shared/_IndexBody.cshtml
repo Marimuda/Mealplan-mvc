@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HealthyEating.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="col-md-6 button-Container">
+        <h4>Check out the rich collection of recipes!</h4>
+        <a asp-area="" asp-controller="Recipes" asp-action="Index" class="button xl-padding button-Block">Recipe</a>
+    </div>
+    <div class="col-md-6 button-Container">
+        <h4>Go ahead, Create your own menu</h4>
+        <a asp-area="" asp-controller="Menus" asp-action="Index" class="button xl-padding button-Block">Menu</a>
+    </div>
+}
+else
+{
+    <div class="col-md-6 button-Container">
+        <h4>Sign up for free today!</h4>
+        <a asp-area="" asp-controller="Account" asp-action="Register" class="button sm-padding button-Block">Create Account</a>
+    </div>
+    <div class="col-md-6 button-Container">
+        <h4>Already a member?</h4>
+        <a asp-area="" asp-controller="Account" asp-action="Login" class="button xl-padding button-Block">Log in</a>
+    </div>
+}   
