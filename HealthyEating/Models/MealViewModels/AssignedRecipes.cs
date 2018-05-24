@@ -4,7 +4,6 @@
     {
         public int RecipeID { get; set; }
         public string RecipeName { get; set; }
-
         public bool Assigned { get; set; }
     }
 }

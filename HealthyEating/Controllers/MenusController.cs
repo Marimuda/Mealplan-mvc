@@ -1,6 +1,7 @@
 ﻿using HealthyEating.Data;
 using HealthyEating.Models;
 using HealthyEating.Models.MealViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace HealthyEating.Controllers
                 .ThenInclude(i => i.Recipes)
                 .ThenInclude(i => i.RecipeIngredients)
                 .ThenInclude(i => i.Ingredients)
+                .Include(i => i.MenuChoices)
+                .ThenInclude(i => i.RecipeType)
                 .Include(i => i.Users)
                 .ThenInclude(i => i.BioDatas)
                 .OrderByDescending(i => i.MealPlan)
@@ -92,38 +95,48 @@ namespace HealthyEating.Controllers
         // GET: Menus/Create
         public IActionResult Create()
         {
-            var Menu = new Menu();
+            var menu = new Menu();
             ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id");
-            Menu.MenuChoices = new List<MenuChoice>();
+            menu.MenuChoices = new List<MenuChoice>();
 
-            PopulateAssignedRecipeData(_context, Menu);
+            PopulateAssignedRecipeData(_context, menu);
+            PopulateAssignedRecipeType(_context, menu);
             return View();
         }
 
         // POST: Menus/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenuID,MenuName,MealPlan,UsersId")] Menu menu, string[] selectedRecipes)
+        public async Task<IActionResult> Create([Bind("MenuID,MenuName,MealPlan,UsersId")] Menu menu, string[] selectedRecipes, string[] selectedType)
         {
             if (selectedRecipes != null)
             {
+                int j = 0;
                 menu.MenuChoices = new List<MenuChoice>();
                 foreach (var recipe in selectedRecipes)
                 {
-                    var RecipeToAdd = new MenuChoice { MenuID = menu.MenuID, RecipeID = int.Parse(recipe) };
+
+                    var RecipeToAdd = new MenuChoice { MenuID = menu.MenuID, RecipeID = int.Parse(recipe), RecipeTypeID = int.Parse(selectedType[j]) };
                     menu.MenuChoices.Add(RecipeToAdd);
+                    j++;
                 }
             }
             if (ModelState.IsValid)
             {
+                if (User.IsInRole("User") == true)
+                {
+                    string LoggedInUser = User.Identity.GetUserId();
+                    menu.UsersId = LoggedInUser;
+                }
                 _context.Add(menu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserID"] = new SelectList(_context.Users, "Id", "FirstName", menu.UsersId);
             PopulateAssignedRecipeData(_context, menu);
+            PopulateAssignedRecipeType(_context, menu);
             return View(menu);
         }
 
@@ -175,6 +188,24 @@ namespace HealthyEating.Controllers
                 });
             }
             ViewData["Recipes"] = viewModel;
+        }
+
+
+        private void PopulateAssignedRecipeType(ApplicationDbContext context, Menu menu)
+        {
+            var AllRecipeTypes = _context.RecipeTypes;
+            var MenuChoice = new HashSet<int>(menu.MenuChoices.Select(r => r.RecipeID));
+            var viewModel = new List<AssignedType>();
+            foreach (var type in AllRecipeTypes)
+            {
+                viewModel.Add(new AssignedType
+                {
+                    TypeID = type.ID,
+                    TypeName = type.CourseType,
+                    Assigned = MenuChoice.Contains(type.ID)
+                });
+            }
+            ViewData["RecipeTypes"] = viewModel;
         }
 
         // POST: Menus/Edit/5

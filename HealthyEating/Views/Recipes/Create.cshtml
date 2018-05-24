@@ -3,13 +3,39 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script type="text/javascript">
 
+
+
+    function GetDynamicTextbox(value) {
+
+        return '<p /><div>Name: <input type="text" class="form-control" style="width:40%; display:inline-block; margin-right:8px; margin-left:-5px" name="selectedIngredients" list="selectedIngredients" /> <input type="button" class="btn btn-default alert-danger" display:inline-block" onclick="RemoveTextBox(this)" value="Del" /></div>';
+
+    }
+
+    function AddTextBox() {
+
+        var div = document.createElement('DIV');
+
+        div.innerHTML = GetDynamicTextbox("");
+
+        document.getElementById("divCont").appendChild(div);
+
+    }
+
+    function RemoveTextBox(div) {
+
+        document.getElementById("divCont").removeChild(div.parentNode.parentNode);
+
+    }
+
+</script>
 <h2>Create</h2>
 
 <h4>Recipe</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 col-md-offset-2">
         <form asp-controller="Recipes" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -39,19 +65,34 @@
                     <input asp-for="RecipeCreationTime" class="form-control" />
                     <span asp-validation-for="RecipeCreationTime" class="text-danger"></span>
                 </div>
-                *@
+            *@
 
             @if (!User.IsInRole("User"))
             {
-            <div class="form-group">
-                <label asp-for="UsersId" class="control-label"></label>
-                <select asp-for="UsersId" class="form-control" asp-items="ViewBag.UserId"></select>
-            </div>
+                <div class="form-group">
+                    <label asp-for="UsersId" class="control-label"></label>
+                    <select asp-for="UsersId" class="form-control" asp-items="ViewBag.UserId"></select>
+                </div>
             }
 
             <div class="form-group">
-                <div class="col-md-offset-0 col-md-12">
-                    <table>
+                <div class="col-md-12">
+                    <div id="divCont">
+                        Name: <input type="text" class="form-control" style="width:40%; display:inline-block; margin-right:8px; margin-left:-5px" name="selectedIngredients" list="selectedIngredients" />
+
+                        <input type="button" onclick="AddTextBox()" value="Add" class="btn btn-default alert-success" display:inline-block />
+
+                        <datalist id="selectedIngredients">
+                            @{ List<HealthyEating.Models.MealViewModels.AssignedIngredients> ingredients = ViewBag.Ingredients; foreach (var i in ingredients)
+                                {
+                                    <option value="@i.IngredientID">@i.IngredientName</option>
+
+
+                                }
+                            }
+                        </datalist>
+                    </div><br />
+                    @*<table>
                         <tr>
                             @{
                                 int cnt = 0;
@@ -73,21 +114,22 @@
                                 }
                                 @:</tr>
                             }
-                        </table>
-                    </div>
+                        </table>*@
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </form>
-        </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
     </div>
+</div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

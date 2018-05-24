@@ -80,7 +80,7 @@ namespace HealthyEating.Controllers
                     break;
             }
 
-            int pageSize = 9;
+            int pageSize = 6;
             return View(await PaginatedList<Recipe>.CreateAsync(Recipes, page ?? 1, pageSize));
         }
         // GET: Recipes/Details/5
@@ -462,7 +462,7 @@ namespace HealthyEating.Controllers
             RecipeRating rating = new RecipeRating();
             rating.Score = Convert.ToInt32(Score);
             rating.RecipeID = RecipeID;
-            rating.UserID = User.Identity.GetUserId();
+            rating.UsersId = User.Identity.GetUserId();
 
             _context.RecipeRatings.Add(rating);
             _context.SaveChanges();

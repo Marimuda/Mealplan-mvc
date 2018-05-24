@@ -17,6 +17,7 @@ namespace HealthyEating.Data
         public virtual DbSet<MenuChoice> MenuChoices { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<BioData> BioDatas { get; set; }
+        public virtual DbSet<RecipeType> RecipeTypes { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -32,6 +33,7 @@ namespace HealthyEating.Data
             builder.Entity<MenuChoice>().ToTable("MenuChoice");
             builder.Entity<Menu>().ToTable("Menu");
             builder.Entity<ApplicationUser>().ToTable("AspNetUser");
+            builder.Entity<RecipeType>().ToTable("RecipeType");
 
             builder.Entity<RecipeIngredient>()
             .HasKey(c => new { c.IngredientID, c.RecipeID });

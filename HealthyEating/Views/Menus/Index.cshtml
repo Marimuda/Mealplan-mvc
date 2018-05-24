@@ -100,12 +100,12 @@
             {
                 selectedRow = "collapse";
             }
-    
+
 
             <tr class="@selectedRow">
                 <td>
                     @Html.ActionLink("Select", "Index",
-                     new { recipeID = item.RecipeID })
+                               new { recipeID = item.RecipeID })
                 </td>
                 <td>
                     <a href="@b@c">@Html.DisplayFor(modelItem => item.RecipeName)</a>

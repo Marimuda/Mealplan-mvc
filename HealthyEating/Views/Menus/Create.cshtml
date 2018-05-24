@@ -3,13 +3,33 @@
 @{
     ViewData["Title"] = "Create";
 }
+<script type="text/javascript">
 
+
+
+    function GetDynamicTextbox(value) {
+        return '<p /><div>Name: <input type="text" class="form-control" style="width:35%; display:inline-block; margin-right:8px;" name = "selectedRecipes" list = "selectedRecipes" /> Type: <input type="text" class="form-control" style="width:35%; display:inline-block; margin-right:8px;" name="selectedType" list="selectedType" /> <input type="button" class="btn btn-default alert-danger" style="margin-top:-2px; display:inline-block" onclick="RemoveTextBox(this)" value="Del" /></div>';
+    }
+
+    function AddTextBox() {
+        var div = document.createElement('DIV');
+        div.innerHTML = GetDynamicTextbox("");
+        document.getElementById("divCont").appendChild(div);
+
+    }
+
+    function RemoveTextBox(div) {
+        document.getElementById("divCont").removeChild(div.parentNode.parentNode);
+    }
+
+
+</script>
 <h2>Create</h2>
 
 <h4>Menu</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 col-md-offset-2">
         <form asp-controller="Menus" asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -19,44 +39,75 @@
             </div>
             <div class="form-group">
                 <label asp-for="MealPlan" class="control-label d-block"></label>
-                    <select asp-for="MealPlan" asp-items="Html.GetEnumSelectList<HealthyEating.Models.Menu.MealPlans>()" class="btn btn-default dropdown-toggle"></select>
-                    <span asp-validation-for="MealPlan" class="text-danger"></span>
+                <select asp-for="MealPlan" asp-items="Html.GetEnumSelectList<HealthyEating.Models.Menu.MealPlans>()" class="btn btn-default dropdown-toggle"></select>
+                <span asp-validation-for="MealPlan" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="UsersId" class="control-label"></label>
-                <select asp-for="UsersId" class="form-control" asp-items="ViewBag.UserID"></select>
-            </div>
+            @if (!User.IsInRole("User"))
+            {
+                <div class="form-group">
+                    <label asp-for="UsersId" class="control-label"></label>
+                    <select asp-for="UsersId" class="form-control" asp-items="ViewBag.UserID"></select>
+                </div>
+            }
             <div class="form-group">
                 <div class="col-md-offset-0 col-md-12">
-                    <table>
-                        <tr>
-                            @{
-                        int cnt = 0;
-                        List<HealthyEating.Models.MealViewModels.AssignedRecipes> recipes = ViewBag.Recipes;
+                    <div id="divCont" style="margin-left:-15px">
+                        Name: <input type="text" class="form-control" style="width:35%; display:inline-block; margin-right:8px;"
+                                     name="selectedRecipes" list="selectedRecipes" />
+                        Type: <input type="text" class="form-control" style="width:35%; display:inline-block; margin-right:8px;"
+                                     name="selectedType" list="selectedType" />
 
-                        foreach (var r in recipes)
-                        {
-                            if (cnt++ % 3 == 0)
-                            {
-                                @:</tr><tr>
-                    }
-                    @:<td>
-                        <input type="checkbox"
-                               name="selectedRecipes"
-                               value="@r.RecipeID"
-                               @(Html.Raw(r.Assigned ? "checked=\"checked\"" : "")) />
-                        @r.RecipeID @:  @r.RecipeName
-                        @:</td>
-                         }
-                         @:</tr>
+                        <input type="button" onclick="AddTextBox()" value="Add" class="btn btn-default alert-success" display:inline-block style="margin-top:-2px;" />
+
+                        <datalist id="selectedRecipes">
+                            @{ List<HealthyEating.Models.MealViewModels.AssignedRecipes> recipes = ViewBag.Recipes;
+                                foreach (var i in recipes)
+                                {
+                                    <option value="@i.RecipeID">@i.RecipeName </option>
+                                }
                             }
-                        </table>
-                    </div>
+                        </datalist>
+                        <datalist id="selectedType">
+                            @{ List<HealthyEating.Models.MealViewModels.AssignedType> types = ViewBag.RecipeTypes;
+                                foreach (var i in types)
+                                {
+                                    <option value="@i.TypeID">@i.TypeName </option>
+                                }
+                            }
+                        </datalist>
+
+                    </div><br />
+
+                    @*<table>
+                            <tr>
+                                @{
+                            int cnt = 0;
+                            List<HealthyEating.Models.MealViewModels.AssignedRecipes> recipes = ViewBag.Recipes;
+
+                            foreach (var r in recipes)
+                            {
+                                if (cnt++ % 3 == 0)
+                                {
+                                    @:</tr><tr>
+                        }
+                        @:<td>
+                            <input type="checkbox"
+                                   name="selectedRecipes"
+                                   value="@r.RecipeID"
+                                   @(Html.Raw(r.Assigned ? "checked=\"checked\"" : "")) />
+                            @r.RecipeID @:  @r.RecipeName
+                            @:</td>
+                             }
+                             @:</tr>
+                                }
+                            </table>
+                    *@
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-            </form>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
     </div>
 </div>
 

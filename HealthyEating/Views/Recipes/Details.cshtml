@@ -35,7 +35,7 @@
     @foreach (var item in Model.RecipeIngredients)
     {
         <p class="ingredient-list">
-            @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
+            @Html.DisplayFor(modelItem => item.Amount) g @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
         </p>
     }
 
@@ -50,6 +50,7 @@
 <div class="col-md-10">
     <a asp-action="Edit" asp-route-id="@Model.RecipeID">Edit</a> |
     <a asp-action="Index">Back to List</a> |
+    <a asp-action="Delete" asp-route-id="@Model.RecipeID">Delete</a>|
     <a href="/Menus"> Menu Overview </a>
 </div>
 
