@@ -39,13 +39,31 @@ namespace HealthyEating.Controllers
                 .ToListAsync()
             };
 
-            if (id != null)
+            /* Public Access to Personal Metabolism */
+            if (User.Identity.GetUserId() != null)
+            {
+                viewModel.BioDatas = await _context.BioDatas.ToListAsync();
+                ViewData["Metabolism"] = viewModel.BioDatas.Where(i => i.UserID == User.Identity.GetUserId()).Select(j => j.AMR).FirstOrDefault();
+            }
+
+
+            /* Assign default menu if not specified otherwise */
+            if (id == null)
+            {
+                var tempID = viewModel.Menus.Where(i => i.MealPlan.Value == Menu.MealPlans.True).Select(i => i.MenuID).FirstOrDefault();
+                id = tempID;
+                ViewData["MenuID"] = id.Value;
+                Menu menu = viewModel.Menus.Single(i => i.MenuID == id.Value);
+                viewModel.Recipes = menu.MenuChoices.Select(s => s.Recipes);
+            }
+            else
             {
                 ViewData["MenuID"] = id.Value;
                 Menu menu = viewModel.Menus.Single(i => i.MenuID == id.Value);
                 viewModel.Recipes = menu.MenuChoices.Select(s => s.Recipes);
             }
 
+            /* Gather Ingredient data for a given recipe*/
             if (recipeID != null)
             {
                 ViewData["RecipeID"] = recipeID.Value;
@@ -57,18 +75,12 @@ namespace HealthyEating.Controllers
                 }
                 viewModel.RecipeIngredients = SelectedRecipe.RecipeIngredients;
 
-                // Recipe recipe = viewModel.Recipes.Single(i => i.RecipeID == recipeID);
-                // viewModel.Ingredients = viewModel.RecipeIngredients.Select(
-                // x => x.Ingredients);
             }
-
-
 
             return View(viewModel);
             //Add Biodata link to ingredients for math operations.
             //Figure Out the ratios, different kinds, one kind, source?
 
-            //return View(await mealContext.ToListAsync());
         }
 
         // GET: Menus/Details/5
@@ -105,8 +117,6 @@ namespace HealthyEating.Controllers
         }
 
         // POST: Menus/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MenuID,MenuName,MealPlan,UsersId")] Menu menu, string[] selectedRecipes, string[] selectedType)
@@ -129,6 +139,7 @@ namespace HealthyEating.Controllers
                 {
                     string LoggedInUser = User.Identity.GetUserId();
                     menu.UsersId = LoggedInUser;
+                    menu.MealPlan = Menu.MealPlans.False;
                 }
                 _context.Add(menu);
                 await _context.SaveChangesAsync();
@@ -209,8 +220,6 @@ namespace HealthyEating.Controllers
         }
 
         // POST: Menus/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, string[] selectedRecipes, Menu menu)
@@ -226,9 +235,6 @@ namespace HealthyEating.Controllers
             .Include(i => i.MenuChoices)
             .ThenInclude(i => i.Recipes)
             .SingleOrDefaultAsync(m => m.MenuID == id);
-
-
-            //var menuToUpdate = await _context.Menus.SingleOrDefaultAsync(m => m.MenuID == id);
 
 
             if (await TryUpdateModelAsync<Menu>(menuToUpdate,
@@ -253,8 +259,6 @@ namespace HealthyEating.Controllers
             UpdateRecipesInMenu(_context, selectedRecipes, menuToUpdate);
             PopulateAssignedRecipeData(_context, menuToUpdate);
             await _context.SaveChangesAsync();
-
-            //return View(menuToUpdate);
             return RedirectToAction(nameof(Index));
         }
 
@@ -338,9 +342,8 @@ namespace HealthyEating.Controllers
                 _context.Menus.Remove(menu);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException /* ex */)
+            catch (DbUpdateException)
             {
-                //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { id, saveChangesError = true });
             }
 

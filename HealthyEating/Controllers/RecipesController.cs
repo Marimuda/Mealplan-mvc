@@ -123,8 +123,7 @@ namespace HealthyEating.Controllers
                 ViewBag.RatingCount = ratingCount;
                 ViewBag.RatingCountP = p;
                 ViewBag.RatingCountM = m;
-                ViewBag.ImgUrl = recipe.RecipeImage;
-                ViewBag.RecipeID = recipe.RecipeID;
+
 
             }
             else
@@ -134,6 +133,9 @@ namespace HealthyEating.Controllers
                 ViewBag.RatingCountP = 0;
                 ViewBag.RatingCountM = 0;
             }
+
+            ViewBag.ImgUrl = recipe.RecipeImage;
+            ViewBag.RecipeID = recipe.RecipeID;
 
             if (recipe == null)
             {
@@ -157,8 +159,6 @@ namespace HealthyEating.Controllers
         }
 
         // POST: Recipes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RecipeName,RecipeDescription,RecipeImage,RecipeRatning,RecipeCreationTime,UserID")] Recipe recipe, IFormFile picture, string[] selectedIngredients)
@@ -206,14 +206,13 @@ namespace HealthyEating.Controllers
 
             }
 
-            catch (DbUpdateException /* ex */)
+            catch (DbUpdateException)
             {
-                //Log the error (uncomment ex variable name and write a log.
+                //Log the error (uncomment ex variable name and write a log).
                 ModelState.AddModelError("", "Unable to save changes. " +
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-            //ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", recipe.UsersId);
             PopulateAssignedIngredientData(_context, recipe);
             return View(recipe);
         }
@@ -232,17 +231,12 @@ namespace HealthyEating.Controllers
                 .AsNoTracking()
                 .SingleOrDefaultAsync(r => r.RecipeID == id);
 
-            //var recipe = await _context.Recipes.SingleOrDefaultAsync(m => m.RecipeID == id);
 
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            // var TimeQuery = from d in _context.Recipes.Where(t => t.RecipeID == id)
-            //                 orderby d.RecipeID
-            //                 select d;
-            // ViewBag.CreationTime = new SelectList(TimeQuery.AsNoTracking(), "RecipeID", "RecipeCreationTime", TimeQuery);
             ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", recipe.UsersId);
 
             var temptime = recipe.RecipeCreationTime;
@@ -252,8 +246,6 @@ namespace HealthyEating.Controllers
             {
                 return NotFound();
             }
-
-            //UpdateIngredientsInRecipe(Ingredients, recipe);
             PopulateAssignedIngredientData(_context, recipe);
             return View(recipe);
         }
@@ -276,11 +268,9 @@ namespace HealthyEating.Controllers
         }
 
         // POST: Recipes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, /*[Bind("RecipeID,RecipeName,RecipeDescription,RecipeImage,RecipeRatning,RecipeCreationTime,UsersId")]*/ string[] selectedIngredients, Recipe recipe)
+        public async Task<IActionResult> Edit(int id, string[] selectedIngredients, Recipe recipe)
         {
             if (id != recipe.RecipeID)
             {
@@ -294,10 +284,6 @@ namespace HealthyEating.Controllers
            .ThenInclude(i => i.Ingredients)
            .SingleOrDefaultAsync(m => m.RecipeID == id);
 
-
-            //var menuToUpdate = await _context.Menus.SingleOrDefaultAsync(m => m.MenuID == id);
-
-
             if (await TryUpdateModelAsync<Recipe>(RecipeToUpdate,
                 "",
                 i => i.RecipeName, i => i.RecipeDescription, i => i.RecipeImage, i => i.RecipeRatings, i => i.RecipeCreationTime, i => i.UsersId))
@@ -307,9 +293,8 @@ namespace HealthyEating.Controllers
                 {
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateException)
                 {
-                    //Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Unable to save changes. " +
                         "Try again, and if the problem persists, " +
                         "see your system administrator.");
@@ -317,34 +302,10 @@ namespace HealthyEating.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // if (ModelState.IsValid)
-            // {
-            //     try
-            //     {
-            //         _context.Update(recipe);
-            //         await _context.SaveChangesAsync();
-            //     }
-            //     catch (DbUpdateConcurrencyException)
-            //     {
-            //         if (!RecipeExists(recipe.RecipeID))
-            //         {
-            //             return NotFound();
-            //         }
-            //         else
-            //         {
-            //             throw;
-            //         }
-            //     }
-            //     return RedirectToAction(nameof(Index));
-            // }
-            //
-
-
             UpdateIngredientsInRecipe(_context, selectedIngredients, RecipeToUpdate);
             PopulateAssignedIngredientData(_context, RecipeToUpdate);
             await _context.SaveChangesAsync();
 
-            //return View(recipe);
             return RedirectToAction(nameof(Index));
         }
 
@@ -431,9 +392,8 @@ namespace HealthyEating.Controllers
                 _context.Recipes.Remove(recipe);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException /* ex */)
+            catch (DbUpdateException)
             {
-                //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { id, saveChangesError = true });
             }
             return RedirectToAction(nameof(Index));
@@ -444,15 +404,6 @@ namespace HealthyEating.Controllers
             return _context.Recipes.Any(e => e.RecipeID == id);
         }
 
-
-        // //0..1 *
-        // private void PopulateIngredientsDropDownList(object selectedIngredient = null)
-        // {
-        //     var ingredientQuery = from d in _context.Ingredients
-        //                           orderby d.IngredientName
-        //                           select d;
-        //     ViewBag.IngredientID = new SelectList(ingredientQuery.AsNoTracking(), "IngredientID", "IngredientName", selectedIngredient);
-        // }
 
         [HttpPost]
         public RecipeRating SetRating(int RecipeID, int Score)
@@ -474,7 +425,6 @@ namespace HealthyEating.Controllers
                 .SingleOrDefault(x => x.ID == rating.ID);
 
             return (rating);
-            //return (i); //måske en fejl ved recipeid = id https://youtu.be/uSIlEY0gX9A?t=667
         }
 
         [HttpGet]

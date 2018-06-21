@@ -1,0 +1,162 @@
+﻿@model HealthyEating.Models.MealViewModels.MenuIndexData
+
+@{
+    ViewData["Title"] = "Menus";
+}
+
+<h2>Menus</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered table-responsive w-auto">
+    <thead>
+        <tr>
+            <th>
+                Menu Name
+            </th>
+            <th>
+                Meal Plan
+            </th>
+            <th>
+                Recipes in Menu
+            </th>
+            <th>
+                Created By UserID
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Menus)
+        {
+            string selectedRow = "";
+            if (item.MenuID == (int?)ViewData["MenuID"])
+            {
+                selectedRow = "bg-success";
+
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.MenuName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MealPlan)
+                <td>
+                    @{
+                        foreach (var recipe in item.MenuChoices)
+                        {
+                            @recipe.Recipes.RecipeID @: @recipe.Recipes.RecipeName <br \ />
+                        }
+
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UsersId)
+                </td>
+
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.MenuID">Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.MenuID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MenuID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MenuID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
+@if (Model.Recipes != null)
+{
+    <h3>
+        Recipes in the selected menu
+    </h3>
+    <table class="table table-bordered table-responsive w-auto">
+        <tr>
+            <th></th>
+            <td>Ingredient Name</td>
+            <td>Recipe Description</td>
+            <td>URL</td>
+            <td>Creation Date</td>
+
+        </tr>
+
+
+        @foreach (var item in Model.Recipes)
+        {
+            string selectedRow = "";
+            string b = "/Recipes/Details/";
+            string c = item.RecipeID.ToString();
+
+
+            if (item.RecipeID == (int?)ViewData["RecipeID"])
+            {
+                selectedRow = "bg-success";
+
+            }
+            if (item.RecipeID != (int?)ViewData["RecipeID"] && ViewData["RecipeID"] != null)
+            {
+                selectedRow = "collapse";
+            }
+
+
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index",
+                                                        new { recipeID = item.RecipeID })
+                </td>
+                <td>
+                    <a href="@b@c">@Html.DisplayFor(modelItem => item.RecipeName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeDescription)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.RecipeImage)" style="height:100px;width:100px;" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecipeCreationTime)
+                </td>
+            </tr>
+        }
+        @if (Model.RecipeIngredients != null)
+        {
+            <tr>
+                <td>Ingredient Name</td>
+                <td></td>
+                <td>Protein</td>
+                <td>Carbohydrates</td>
+                <td>Fat</td>
+            </tr>
+
+            @foreach (var item in Model.RecipeIngredients)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ingredients.IngredientName)
+                    </td>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ingredients.Protein)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ingredients.Carbohydrates)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ingredients.Fat)
+                    </td>
+                </tr>
+            }
+
+
+        }
+    </table>
+    @if (Model.RecipeIngredients != null)
+    {
+        <a asp-action="Index" class="btn btn-info" style="margin-top:-20px">Go Back</a> @*Kom med et bedre navn til knappen*@
+    }
+
+
+}

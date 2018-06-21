@@ -7,13 +7,6 @@ namespace HealthyEating.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            //  migrationBuilder.DropColumn(
-            //      name: "UserID",
-            //      table: "Recipe");
-
-            // migrationBuilder.DropColumn(
-            //     name: "UserID",
-            //     table: "Menu");
 
             migrationBuilder.AddColumn<int>(
                 name: "RecipeTypeID",

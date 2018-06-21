@@ -23,9 +23,6 @@ namespace HealthyEating.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
             builder.Entity<Recipe>().ToTable("Recipe");
             builder.Entity<RecipeRating>().ToTable("RecipeRating");
             builder.Entity<RecipeIngredient>().ToTable("RecipeIngredient");
@@ -38,6 +35,14 @@ namespace HealthyEating.Data
             builder.Entity<RecipeIngredient>()
             .HasKey(c => new { c.IngredientID, c.RecipeID });
 
+            builder.Entity<ApplicationUser>()
+            .HasOne(a => a.BioDatas)
+            .WithOne(b => b.Users)
+            .HasForeignKey<BioData>(b => b.UserID);
+
         }
+
+
+        public DbSet<HealthyEating.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

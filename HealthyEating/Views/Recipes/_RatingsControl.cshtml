@@ -1,16 +1,4 @@
 ﻿@model HealthyEating.Models.Recipe
-@*@{
-        if (Model.RecipeRatings.Count > 0)
-        {
-            <p>The overall rating for @Model.RecipeName is @ViewBag.RatingSum where @ViewBag.RatingCountP + and @ViewBag.RatingCountM - </p>
-        }
-        else
-        {
-            <p>Be the first to rate @Model.RecipeName</p>
-        }
-    }*@
-
-
 
 @{
 
@@ -22,43 +10,3 @@
         </a>
     }
 }
-
-@*
-    @{using (Html.BeginForm(" SetRating", "Recipes" ))
-              {:
-              @Html.HiddenFor(x=>
-               x.RecipeID)
-               for (int i = 0; i < 2; i++)
-               {
-               double k = Math.Pow(-1, i);
-               <input type="radio" id="Score" name="Score" value="@k" /> @k
-               }
-               <input type="submit" value="Submit" />
-               }
-               }
-
-*@
-
-@*
-    <dt>
-        <p>Score</p>
-    </dt>
-    <dd>
-        <p>@ratingSum</p>
-    </dd>
-    <dd>
-        @{using (Html.BeginForm("SetRating", "Recipes"))
-        {
-        @Html.HiddenFor(x => x.RecipeID)
-        for (int i = 0; i < 2; i++)
-        {
-        double k = Math.Pow(-1, i);
-        <input type="radio" id="Score" name="Score" value="@k" /> @k
-        }
-        <input type="submit" value="Submit" />
-        }
-        }
-
-
-    </dd>
-*@

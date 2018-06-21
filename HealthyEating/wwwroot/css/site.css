@@ -81,6 +81,7 @@ form {
     -webkit-border-radius: 4px;
     border-radius: 4px;
     margin: 10px 0px 0px 10px; 
+    float: right;
 }
 
 .form-shadow {
@@ -151,7 +152,6 @@ form > .button:hover {
 
 .nav {
     padding-left: 0;
-    margin-top: -10px !important;
     list-style: none;
 }
 .navbar-btn {

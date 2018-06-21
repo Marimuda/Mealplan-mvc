@@ -37,15 +37,21 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>*@
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">User Info</a></li>
                     <li><a asp-area="" asp-controller="Recipes" asp-action="Index">Recipe</a></li>
-                    <li><a asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredients</a></li>
-                    <li><a asp-area="" asp-controller="Menus" asp-action="Index">Menu</a></li>
+                    <li><a asp-area="" asp-controller="Menus" asp-action="Index">Mealplan</a></li>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                    {
+                        <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="Index">User Info</a></li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li><a asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredients</a></li>
+                        }
+                    }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
-                <form method="post" class="form-shadow">
+                <form method="post" class="form-shadow" s>
                     <input type="text" class="textbox" placeholder="Search">
                     <input title="Search" value=" ֩" type="submit" class="button">
                 </form>
