@@ -51,10 +51,12 @@
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
-                <form method="post" class="form-shadow" s>
-                    <input type="text" class="textbox" placeholder="Search">
+                <form asp-controller="Recipes" asp-action="Index" method="get" class="form-shadow">
+                    <input type="text" class="textbox" name="SearchString" placeholder="Search" value="@ViewData["currentFilter"]" />
                     <input title="Search" value=" ֩" type="submit" class="button">
+
                 </form>
+
             </div>
         </div>
     </nav>

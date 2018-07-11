@@ -31,7 +31,7 @@ else
     <h2>Mealplan</h2>
 }
 
-@if (User.IsInRole("Admin"))
+@if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
 {
     <p>
         <a asp-action="Create">Create New</a>
@@ -137,7 +137,7 @@ else
                     <tr class="@selectedRow">
                         <td>
                             @Html.ActionLink("Select", "Index",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 new { recipeID = item.RecipeID })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     new { recipeID = item.RecipeID })
                         </td>
                         <td>
                             <a href="@b@c">@Html.DisplayFor(modelItem => item.RecipeName)</a>
@@ -255,7 +255,7 @@ else
                         </div>
 
                         @Html.ActionLink("Select", "Index",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 new { recipeID = item.RecipeID })
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     new { recipeID = item.RecipeID })
                         <p>
                             <a asp-action="Create">Create New</a>
                         </p>
@@ -352,6 +352,7 @@ else
             i++;
         }
     </div>
+    <h1>@ViewData["Metabolism"]</h1>
 *@
-<h1>@ViewData["Metabolism"]</h1>
+
 
